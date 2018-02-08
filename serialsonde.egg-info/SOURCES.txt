@@ -1,0 +1,8 @@
+README.md
+setup.py
+serialsonde.egg-info/PKG-INFO
+serialsonde.egg-info/SOURCES.txt
+serialsonde.egg-info/dependency_links.txt
+serialsonde.egg-info/top_level.txt
+sondeserial/__init__.py
+sondeserial/sondeserial.py

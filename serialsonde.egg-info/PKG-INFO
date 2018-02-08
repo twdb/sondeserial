@@ -1,0 +1,12 @@
+Metadata-Version: 1.0
+Name: serialsonde
+Version: 1.0.0
+Summary: Tools for interacting with YSI datasondes via serialconnection
+Home-page: http://github.com/twdb/sondeserial
+Author: Taylor Sansom
+Author-email: taylor.sansom@twdb.texas.gov
+License: MIT License
+Description-Content-Type: UNKNOWN
+Description: UNKNOWN
+Keywords: serial,sonde
+Platform: UNKNOWN
