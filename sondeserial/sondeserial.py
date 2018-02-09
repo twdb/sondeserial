@@ -70,7 +70,7 @@ class YSI600:
                     ser = serial.Serial(comport)
                     sleep(0.2)
                     ser.write(b'menu\r\n')
-                    sleep(0.2)
+                    sleep(1)
                     print(comport, ser.in_waiting)
                     assert ser.in_waiting >= 18
                     self.port = comport
