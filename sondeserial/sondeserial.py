@@ -54,21 +54,6 @@ class YSI600:
         port has the serial connection.
         '''
         print('Getting port... ', end='')
-        # if self.port is not None:  # if a port is given
-        #     try:
-        #         sleep(0.2)
-        #         ser = serial.Serial(self.port)
-        #         sleep(0.2)
-        #         ser.write(b'0')
-        #         sleep(0.1)
-        #         assert ser.in_waiting > 0, 'no serial connection on port {}'\
-        #             .format(self.port)
-        #         ser.close()
-        #     except serial.SerialException:
-        #         raise
-        #     except AssertionError:
-        #         ser.close()
-        #         raise
         if self.sniff_ports is True:  # no port, sniff_ports=True
             for comport in [cp.device for cp in comports()]:
                 try:
