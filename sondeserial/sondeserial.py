@@ -18,7 +18,7 @@ class YSI600:
     Create and manipulate a serial connection to a YSI 600 sonde.
     '''
     def __init__(self, port=None, timeout=5, baudrate=None, full_report=False,
-                 sniff_ports=False):
+                 sniff_ports=False, sleep_time=0.2):
         '''
         Initialize the attributes
         '''
@@ -33,6 +33,7 @@ class YSI600:
         self.log_head = None
         self.full_report = full_report
         self.sniff_ports = sniff_ports
+        self.sleep_time = sleep_time
 
         self.ser = serial.Serial()  # create the connection
         if self.port is None:
@@ -72,9 +73,9 @@ class YSI600:
             for comport in [cp.device for cp in comports()]:
                 try:
                     ser = serial.Serial(comport)
-                    sleep(0.2)
+                    sleep(self.sleep_time)
                     ser.write(b'menu\r\n')
-                    sleep(1)
+                    sleep(self.sleep_time * 5)
                     print(comport, ser.in_waiting)
                     assert ser.in_waiting >= 18
                     self.port = comport
@@ -91,7 +92,7 @@ class YSI600:
         '''
         Open the serial connection (if it's not open already)
         '''
-        sleep(0.1)
+        sleep(self.sleep_time)
         if not self.ser.is_open:
             self.ser.open()
         self.connected = True
@@ -104,13 +105,13 @@ class YSI600:
         if self.ser.is_open:
             self.ser.close()
         self.connected = False
-        sleep(0.1)
+        sleep(self.sleep_time)
 
     def flush_all(self):
         '''
         Flush the inputs and outputs so nothing is in the buffer
         '''
-        sleep(0.2)
+        sleep(self.sleep_time)
         self.ser.flushInput()
         self.ser.flushOutput()
 
@@ -130,7 +131,7 @@ class YSI600:
         else:
             raise TypeError('cannot write data of type {} - only string, bytes'
                             'or integer')
-        sleep(0.2)
+        sleep(self.sleep_time)
 
     def main_menu(self):
         '''
@@ -145,9 +146,9 @@ class YSI600:
         else:
             for _ in range(4):
                 self.write(0)
-            sleep(0.1)
+            sleep(self.sleep_time)
             self.write('n')
-        sleep(0.1)
+        sleep(self.sleep_time)
         self.flush_all()
 
     def read_all(self):
@@ -172,7 +173,7 @@ class YSI600:
         print('Getting serial number... ', end='')
         self.main_menu()
         self.write(5)
-        sleep(0.1)
+        sleep(self.sleep_time)
         self.sn = \
             [x.split('=')[-1] for x in self.read_all()
                 if 'Instrument ID' in x][0]
@@ -249,7 +250,7 @@ class YSI600:
         self.write(1)
         self.flush_all()
         self.write(1)
-        sleep(8)
+        sleep(self.sleep_time * 40)
         self.write(0)
         log = self.read_all()
         print('Done')
