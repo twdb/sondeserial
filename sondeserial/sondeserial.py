@@ -69,9 +69,9 @@ class YSI600:
                 try:
                     ser = serial.Serial(comport)
                     sleep(0.2)
-                    ser.write(b'0')
+                    ser.write(b'menu\r\n')
                     sleep(0.2)
-                    assert ser.in_waiting > 0
+                    assert ser.in_waiting > 6
                     self.port = comport
                     ser.close()
                     break
