@@ -68,7 +68,7 @@ class YSI600:
                     ser = serial.Serial(comport)
                     sleep(0.2)
                     ser.write(b'0')
-                    sleep(0.1)
+                    sleep(0.2)
                     assert ser.in_waiting > 0
                     self.port = comport
                     ser.close()
@@ -81,6 +81,7 @@ class YSI600:
         '''
         Open the serial connection (if it's not open already)
         '''
+        sleep(0.1)
         if not self.ser.is_open:
             self.ser.open()
         self.connected = True
@@ -92,6 +93,7 @@ class YSI600:
         if self.ser.is_open:
             self.ser.close()
         self.connected = False
+        sleep(0.1)
 
     def flush_all(self):
         '''
