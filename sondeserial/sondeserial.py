@@ -45,6 +45,7 @@ class YSI600:
             self.get_status()
             self.get_files()
             self.get_report()
+        self.flush_all()
 
     def get_port(self):
         '''
@@ -94,6 +95,7 @@ class YSI600:
         if not self.ser.is_open:
             self.ser.open()
         self.connected = True
+        self.write('\r\n')
 
     def disconnect(self):
         '''
@@ -158,10 +160,10 @@ class YSI600:
                          .replace('\x1b[2J\x1b[1;1H', '')
                          .replace('\x08', '')
                      for line in self.ser.readlines()]
-        # make sure there is nothing in the buffer - might need to append
-        # data or change sleep timing if so
-        assert self.ser.in_waiting == 0
-        return lines
+            # make sure there is nothing in the buffer - might need to append
+            # data or change sleep timing if so
+            assert self.ser.in_waiting == 0
+            return lines
 
     def get_sn(self):
         '''
