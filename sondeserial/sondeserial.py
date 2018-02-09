@@ -71,6 +71,7 @@ class YSI600:
                     sleep(0.2)
                     ser.write(b'menu\r\n')
                     sleep(0.2)
+                    print(comport, ser.in_waiting)
                     assert ser.in_waiting >= 18
                     self.port = comport
                     ser.close()
