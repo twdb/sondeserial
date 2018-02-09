@@ -49,6 +49,7 @@ class YSI600:
         print('Getting port... ', end='')
         if self.port is not None:  # if a port is given
             try:
+                sleep(0.2)
                 ser = serial.Serial(self.port)
                 sleep(0.2)
                 ser.write(b'0')
@@ -56,8 +57,11 @@ class YSI600:
                 assert ser.in_waiting > 0, 'no serial connection on port {}'\
                     .format(self.port)
                 ser.close()
-            except:
-                pass
+            except serial.SerialException:
+                raise
+            except AssertionError:
+                ser.close()
+                raise
         else:  # if no port is given
             for comport in [cp.device for cp in comports()]:
                 try:
