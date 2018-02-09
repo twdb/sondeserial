@@ -17,7 +17,7 @@ class YSI600:
     '''
     Create and manipulate a serial connection to a YSI 600 sonde.
     '''
-    def __init__(self, port=None, timeout=5, baudrate=None):
+    def __init__(self, port=None, timeout=5, baudrate=None, full_report=False):
         '''
         Initialize the attributes
         '''
@@ -30,16 +30,18 @@ class YSI600:
         self.report = {}
         self.connected = False
         self.log_head = None
+        self.full_report = full_report
 
         self.ser = serial.Serial()  # create the connection
         self.get_port()
         self.ser.port = self.port
         self.ser.timeout = self.timeout
         self.connect()  # connect
-        # self.get_sn()
-        # self.get_status()
-        # self.get_files()
-        # self.get_report()
+        if self.full_report is True:
+            self.get_sn()
+            self.get_status()
+            self.get_files()
+            self.get_report()
 
     def get_port(self):
         '''
