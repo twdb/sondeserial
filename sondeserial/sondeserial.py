@@ -17,7 +17,8 @@ class YSI600:
     '''
     Create and manipulate a serial connection to a YSI 600 sonde.
     '''
-    def __init__(self, port=None, timeout=5, baudrate=None, full_report=False):
+    def __init__(self, port=None, timeout=5, baudrate=None, full_report=False,
+                 sniff_ports=False):
         '''
         Initialize the attributes
         '''
@@ -31,6 +32,7 @@ class YSI600:
         self.connected = False
         self.log_head = None
         self.full_report = full_report
+        self.sniff_ports = sniff_ports
 
         self.ser = serial.Serial()  # create the connection
         self.get_port()
@@ -64,7 +66,7 @@ class YSI600:
             except AssertionError:
                 ser.close()
                 raise
-        else:  # if no port is given
+        elif self.sniff_ports is True:  # no port, sniff_ports=True
             for comport in [cp.device for cp in comports()]:
                 try:
                     ser = serial.Serial(comport)
@@ -78,6 +80,9 @@ class YSI600:
                     break
                 except:
                     ser.close()
+        else:
+            raise ConnectionError('No port specified - Either supply a port'
+                                  ' or set sniff_ports=True')
         print('{}'.format(self.port))
 
     def connect(self):
